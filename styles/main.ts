@@ -1,6 +1,14 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-const Style = StyleSheet.create({
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  
+});
+
+const style = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     height: '100%',
@@ -19,6 +27,15 @@ const Style = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
-})
-
-export default Style;
+  input: {
+    borderColor: 'blue',
+    borderWidth: 5,
+  },
+  TextInput: {
+    borderWidth: 5,
+    borderColor: 'wine',
+    padding: 10,
+    marginTop: 20,
+    borderRadius: 10,
+  },
+});
