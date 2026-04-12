@@ -1,10 +1,10 @@
 import { ScrollView, Text, View } from "react-native";
 
-export default function Login() {
+export default function Link() {
    return (
     <ScrollView>
         <View>
-            <Text>welcome to login page !</Text>
+            <Text>welcome to Link page !</Text>
         </View>
     </ScrollView>
    )
