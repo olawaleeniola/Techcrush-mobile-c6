@@ -3,12 +3,15 @@ import { Tabs } from 'expo-router';
 
 export default function TabLayout() {
   return (
+
     <Tabs
-      screenOptions={{ tabBarActiveTintColor: '#007AFF',}}>
+      screenOptions={{ tabBarActiveBackgroundColor: 'blue', tabBarActiveTintColor: '#007AFF',}}>
       <Tabs.Screen
         name="dashboard"
         options={{
-          title: 'Home',
+          title: 'Dashboard',
+          headerShown: false,
+          tabBarActiveBackgroundColor: 'red',
           tabBarIcon: ({ color }) => 
           <Ionicons name="home" size={24} color={color} />,
         }}
