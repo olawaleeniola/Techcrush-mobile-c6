@@ -5,7 +5,9 @@ export default function TabLayout() {
   return (
 
     <Tabs
-      screenOptions={{ tabBarActiveBackgroundColor: 'blue', tabBarActiveTintColor: '#007AFF',}}>
+      screenOptions={{ tabBarPosition: 'bottom', tabBarStyle: { backgroundColor: '#fff' }, tabBarVariant: 'uikit', 
+        tabBarActiveBackgroundColor: 'blue',
+       tabBarActiveTintColor: '#007AFF',}}>
       <Tabs.Screen
         name="dashboard"
         options={{

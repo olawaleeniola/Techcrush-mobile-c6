@@ -1,21 +1,48 @@
 
 // import (link) from @react-navigation/native;
+import { MyContext } from "@/context/AuthContext";
 import { Button } from "@react-navigation/elements";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
+import { useContext } from "react";
 
 // import { link } from "expo-router";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 
-export default function Login() {
+export default function Home() {
     const navigation = useRouter();
+    const {user, setUser} = useContext(MyContext);
    return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: '#fff', flex: 1, padding: 16 }}>
         <View>
-            <Text>hello, world!</Text>
-            <Link href = '/profile' >Go to Profile</Link>
+           
+           <View style={styles.inputContainer}> 
+            <Text style={styles.Label}>Name:</Text>
+
+            <TextInput value = {user.name} onChangeText = {(value) => setUser({...user, name: value})} style = {styles.input}/>
+           </View>
+
+           <View style={styles.inputContainer}> 
+            <Text style={styles.Label}>Email:</Text>
+
+            <TextInput value = {user.email} onChangeText = {(value) => setUser({...user, email: value})} style = {styles.input}/>
+           </View>
+           
+           <View style={styles.inputContainer}> 
+            <Text style={styles.Label}>Age:</Text>
+
+            <TextInput value = {user.age.toLocaleString()} onChangeText = {(value) => setUser({...user, age: Number(value) || 0})} style = {styles.input}/>
+           </View>
+
             <Button onPressIn={() => {navigation.push('/profile')}}> Go to Profile </Button>
         </View>
     </ScrollView>
    )
 
 }
+
+const styles = StyleSheet.create({
+
+Label: {fontSize: 16, fontWeight: 'bold', marginBottom: 8},
+input : {borderWidth: 1, borderColor: '#ccc', borderRadius: 4, padding: 8, marginBottom: 16},
+inputContainer: {marginBottom: 16},
+});
