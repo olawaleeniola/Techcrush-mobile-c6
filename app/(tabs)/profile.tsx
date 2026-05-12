@@ -1,26 +1,129 @@
-import useStore from "@/store/useStore";
-import { ScrollView, Text, View } from "react-native";
+import { fetchPostsData } from "@/api/axios-client";
+// import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, ScrollView, SectionList, StatusBar, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
+export default function Profile () {
+    const [rawData, setRawData] = useState<any>();
+     const [posts, setPosts] = useState <any>([]);
+     const [page, setPage] = useState (1);
 
-export default function Profile() {
-    //const {user} = useContext(MyContext);
-    const user= useStore ((state:any) => state.user);
+    const fetchMoreData = async () => {
+      const skip = page * 30; // Assuming each page has 30 items
+    const data = await fetchPostsData(skip);
+    setPage((prev) => prev + 1);
+    setRawData(data);
+    setPosts((prev:any) => [...prev, ...data?.posts]);
+        };
 
+    useEffect (() => {
+    const fetchData = async () => {
+    const data = await fetchPostsData(0);
+    setRawData(data);
+    setPosts(data?.posts);
+        };
+        fetchData();
+      }, []);
+
+        const DATA = [
+  {
+    title: 'Main dishes',
+    data: ['Pizza', 'Burger', 'Risotto'],
+  },
+  {
+    title: 'Sides',
+    data: ['French Fries', 'Onion Rings', 'Fried Shrimps'],
+  },
+  {
+    title: 'Drinks',
+    data: ['Water', 'Coke', 'Beer'],
+  },
+  {
+    title: 'Desserts',
+    data: ['Cheese Cake', 'Ice Cream'],
+  },
+];
    return (
+    <SafeAreaView style= {{ backgroundColor: '#fff', flex: 1 }}>
     <ScrollView>
         <View>
             <Text>Welcome to the tabs profile page!</Text>
-            <Text>
-                Email: {user.email}
-            </Text>
-            <Text>
-                Name: {user.name}
-            </Text>
-            <Text>
-                Age: {user.age}
-            </Text>
+            <Text></Text>
         </View>
-    </ScrollView>
-   )
+        {/* <SectionList
+       // horizontal
+        sections={DATA}
+            */}
+          keyExtractor={(item, index) => item + index}
+        renderItem={({item}) => (
+          <View style={styles.item}>
+            <Text style={styles.title}>{item}</Text>
+          </View>
+        )}
+        renderSectionHeader={({section: {title}}) => (
+          <Text style={styles.header}>{title}</Text>
+        )}
+        />
+        <View>
+            { posts?.length === 0 ? (<ActivityIndicator/>): 
 
+            (
+        <View>
+            <FlatList
+            //horizontal
+            onEndReachedThreshold={0.5}
+            onEndReached={fetchMoreData} 
+            numColumns={2}
+      data={posts}
+      keyExtractor={(item, i) => i.toString()}
+      renderItem= {({ item }: any) => (
+        <View style={{padding: 20, maxWidth: '50%',}}>
+           <Text>id:{item?.id}</Text>
+            <Text>Title:{item?.title}</Text>
+            <Text>Body:{item?.body}</Text>
+        </View>
+      )}
+    />
+        {/* {posts?.map((post: any, i) => {
+
+        return (
+       <View 
+       style = {{borderBlockColor: "red", marginTop: 10, padding: 10}}
+       key=
+       {i}
+       > 
+            <Text>id:{post?.id}</Text>
+            <Text>Title:{post?.title}</Text>
+            <Text>Body:{post?.body}</Text>
+           </View>
+        );
+    })} */}
+
+       </View>
+       )}
+    </View> 
+    </ScrollView>
+    </SafeAreaView>
+   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight,
+    marginHorizontal: 16,
+  },
+  item: {
+    backgroundColor: '#f9c2ff',
+    padding: 20,
+    marginVertical: 8,
+  },
+  header: {
+    fontSize: 32,
+    backgroundColor: '#fff',
+  },
+  title: {
+    fontSize: 24,
+  },
+});
